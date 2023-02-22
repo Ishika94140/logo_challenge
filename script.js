@@ -4,6 +4,8 @@ const imgArea = document.querySelector('.img-area');
 const predictionResult = document.querySelector('.prediction-result');
 const probabilityElement = document.querySelector('.probability');
 const predictedTagElement = document.querySelector('.predicted-tag');
+const form = document.querySelector('form');
+
 
 selectImage.addEventListener('click', function () {
     inputFile.click();
@@ -32,14 +34,67 @@ inputFile.addEventListener('change', function () {
     }
 })
 
+function predictFromUrl(url) {
+  // Define API endpoint and parameters
+  const endpoint = "https://northeurope.api.cognitive.microsoft.com/";
+  const predictionKey = "45c378f92ece4577a2137e212b477fab";
+  const projectId = "4380d3a8-4609-45ae-ba53-7c5c5041d652";
+  const iterationId = "Iteration8";
+
+  // Define request headers
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Prediction-Key", predictionKey);
+
+  // Define request body
+  const body = JSON.stringify({ url: url });
+
+  // Send prediction request to API
+  fetch(
+    endpoint +
+      "customvision/v3.0/Prediction/" +
+      projectId +
+      "/detect/iterations/" +
+      iterationId +
+      "/url",
+    {
+      method: "POST",
+      headers: headers,
+      body: body,
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      // Sort predictions by probability in descending order
+      const sortedPredictions = data.predictions.sort(
+        (a, b) => b.probability - a.probability
+      );
+      // Display prediction with highest probability
+      const highestPrediction = sortedPredictions[0];
+      predictionResult.style.display = "block";
+      probabilityElement.textContent =
+        Math.round(highestPrediction.probability * 100 * 100) / 100 + "%";
+      predictedTagElement.textContent = highestPrediction.tagName;
+    })
+    .catch((error) => console.log(error));
+}
+
+
+
+
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  const url = document.querySelector('#url-input').value;
+  predictFromUrl(url);
+});
+
 
 function predictLogo(imgUrl) {
     // Define API endpoint and parameters
-    const endpoint =
-      "https://northeurope.api.cognitive.microsoft.com/";
+    const endpoint = "https://northeurope.api.cognitive.microsoft.com/";
     const predictionKey = "45c378f92ece4577a2137e212b477fab";
     const projectId = "4380d3a8-4609-45ae-ba53-7c5c5041d652";
-    const iterationId = "Iteration6";
+    const iterationId = "Iteration8";
   
     // Define request headers
     const headers = new Headers();

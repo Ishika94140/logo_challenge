@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>LogoXplorer</title>
+  <link rel="stylesheet" href="style.css">
+  <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <header>
+    <h1>LogoXplorer</h1>
+  </header>
+  <main>
+    <div id="logo-form">
+      <p>Enter the URL of an image or upload a file</p>
+      <div id="result-container"></div>
+      <form>
+        <div id="logo-url">
+          <input type="url" id="url-input" placeholder="Enter URL of the image">
+          <button type="submit">Submit</button>
+        </div>
+    </form>
+    <div class="container">
+        <input type="file" id="file" accept="image/*" hidden>
+        <div class="img-area" data-img="">
+            <i class='bx bxs-cloud-upload icon'></i>
+            <h3>Upload Image</h3>
+            <p>Image size must be less than <span>2MB</span></p>
+        </div>
+        <button class="select-image">Select Image</button>
+    </div>
+    <div class="prediction-result" style="display: none;">
+        <h3>Prediction Result</h3>
+        <div class="result-container">
+            <p>Predicted tag: <span class="predicted-tag"></span></p>
+            <p>Probability: <span class="probability"></span></p>
+        </div>
+    </div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
+
